@@ -1,2 +1,2 @@
 # Sudoku
-A sudoku solver static webapp!
+A sudoku solver static website!
