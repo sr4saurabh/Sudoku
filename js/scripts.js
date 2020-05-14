@@ -1,8 +1,4 @@
-/*!
-    * Start Bootstrap - Grayscale v6.0.0 (https://startbootstrap.com/themes/grayscale)
-    * Copyright 2013-2020 Start Bootstrap
-    * Licensed under MIT (https://github.com/BlackrockDigital/startbootstrap-grayscale/blob/master/LICENSE)
-    */
+
 
     
     (function ($) {
@@ -68,7 +64,7 @@ function reset()
             var st=k.toString();
             st="cell-"+st;
             var v=document.getElementById(st);
-            v.value="0";
+            v.value="";
 
         }
     }
@@ -169,7 +165,54 @@ function solvesudoku(board)
     } 
     return false; 
 }
+    function checkmatrix(matrix)
+    {
+        for(var i=0;i<9;i++)
+        {
+            for(var j=0;j<9;j++)
+            {
+                var curr=matrix[i][j];
+                if(curr>9 || curr<0)
+                {
+                    return false;
+                }
+                
+                if(matrix[i][j]>0)
+                {
+                    for(var k=0;k<9;k++)
+                    {
+                        if(k!=i)
+                        {
+                            if(matrix[k][j]==matrix[i][j])
+                            return false;
+                        }
+                        if(k!=j)
+                        {
+                            if(matrix[i][k]==matrix[i][j])
+                            return false;
+                        }
 
+                    }
+                    var boxRowStart=i-i%3;
+                    var boxColStart=j-j%3;
+                    for (var r = boxRowStart; 
+                             r < boxRowStart + 3; r++)  
+                    { 
+                        for (var d = boxColStart;  
+                                 d < boxColStart + 3; d++)  
+                        { 
+                            if (matrix[r][d] == matrix[i][j] && i!=r && j!=d)  
+                            { 
+                                return false; 
+                            } 
+                        } 
+                    }
+
+                }
+            }
+        }
+        return true;
+    }
 
 
     function solvesud(){
@@ -185,6 +228,8 @@ function solvesudoku(board)
                 var st=k.toString();
                 st="cell-"+st;
                 var v=document.getElementById(st);
+                if(v.value=="")
+                v.value="0";
                 matrix[i][j]=parseInt(v.value);
                 console.log(matrix[i][j]+" ");
                 
@@ -197,7 +242,7 @@ function solvesudoku(board)
         }
         var d=new Date();
         starttime=d.getSeconds();
-        if(solvesudoku(matrix))
+        if(checkmatrix(matrix) && solvesudoku(matrix))
                 {
                    
                     for(var i=0;i<9;i++)
@@ -214,6 +259,7 @@ function solvesudoku(board)
                 }
                 else
                 {
+                reset();
                 alert("No solution - Invalid Sudoku");
             
                 }
